@@ -1,22 +1,24 @@
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { products, shops } from '@/lib/data';
-import { ProductDetailsClient } from './product-details-client';
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { products, shops } from "@/lib/data";
+import {ProductDetailsClient} from "./product-details-client";
 
-export default function ProductDetailsPage({
+export default async function ProductDetailsPage({
   params,
 }: {
-  params: { shopId: string; productId: string };
+  params: Promise<{ shopId: string; productId: string }>;
 }) {
-  const shopId = Number(params.shopId);
-  const productId = Number(params.productId);
+  const { shopId, productId } = await params;
 
-  if (!Number.isFinite(shopId) || !Number.isFinite(productId)) notFound();
+  const sid = Number(shopId);
+  const pid = Number(productId);
 
-  const shop = shops.find((s) => s.id === shopId);
+  if (!Number.isFinite(sid) || !Number.isFinite(pid)) notFound();
+
+  const shop = shops.find((s) => s.id === sid);
   if (!shop) notFound();
 
-  const product = products.find((p) => p.id === productId && p.shopId === shopId);
+  const product = products.find((p) => p.id === pid && p.shopId === sid);
   if (!product) notFound();
 
   return (
@@ -35,7 +37,9 @@ export default function ProductDetailsPage({
               <span className="mx-2">/</span>
               <span className="text-neutral-700">Product</span>
             </div>
-            <h1 className="mt-1 text-2xl font-semibold text-neutral-900 line-clamp-2">{product.name}</h1>
+            <h1 className="mt-1 text-2xl font-semibold text-neutral-900 line-clamp-2">
+              {product.name}
+            </h1>
           </div>
 
           <Link
@@ -49,5 +53,4 @@ export default function ProductDetailsPage({
         <ProductDetailsClient shop={shop} product={product} />
       </div>
     </div>
-  );
-}
+  );}
