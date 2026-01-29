@@ -9,6 +9,9 @@ import { WhatsAppButton } from '@/components/product-details/WhatsAppButton';
 
 export function ProductDetailsClient({ shop, product }: { shop: Shop; product: Product }) {
   // If you later add real variant sets per product, populate these from your API/data.
+  // variants: قائمة خيارات للمنتج (حاليًا فاضية).  selectedVariants: شو اختار المستخدم من هالخيارات.
+  //  متل اللون: أسود/فضي او السعة: 256/ 512 او حالة الجهاز: جديد / مستخدم 
+  // حاليًا ما في variants بداتا المنتج، بس لاحقًا إذا جبتها من API رح تعبيها هون
   const variants = useMemo(() => {
     return [];
   }, []);
@@ -16,6 +19,7 @@ export function ProductDetailsClient({ shop, product }: { shop: Shop; product: P
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
 
   const keySpecs = useMemo(() => {
+    // حطيتن مصفوفة اوبجكتات وليس اوبجيكت واحد فيو كلشي لان العرض بـ map أسهل وأنظف
     return [
       { label: 'Brand', value: product.brand },
       { label: 'CPU', value: product.cpu },
@@ -43,7 +47,10 @@ export function ProductDetailsClient({ shop, product }: { shop: Shop; product: P
       },
     } as Record<string, Record<string, string>>;
   }, [product, shop]);
-
+// fullSpecs عملناها Object مقسّم (Overview/Performance/...) لأن SpecsSection بتعرض المواصفات كمجموعات.
+// أما keySpecs عملناها Array من {label, value} لأن ProductInfo بده قائمة قصيرة بسيطة تنعرض كسطور/سطر "فيو مفتاح وقيمة يا منحطن حد بعض يا عاموديا" بدون أقسام.
+  // ما بكفي [product] لان shop اسمه رح يظهر بالمواصفات shop.name فاذا انا غيرت اسم المحل البيانات هون ما رح تتحدث
+// الاحسن حط  useMemo<Record<string, Record<string, string>>> لان ال asبيخفي أخطاء
   const images = useMemo(() => {
     // Your current data model has a single image. We duplicate it so the gallery works as designed.
     return [product.image, product.image, product.image, product.image];
@@ -70,6 +77,7 @@ export function ProductDetailsClient({ shop, product }: { shop: Shop; product: P
             selectedVariants={selectedVariants}
             onVariantChange={handleVariantChange}
           />
+          {/* مررت الدالة بدل من تمرير setSelectedVariants فقط وبالملف اعملو الفانكشن لان اذا بدي الفانكشن بمكان تاني بدي ارجع اعمل الفانكشن اما الاصح اعمل الفانكشن بمكان تواجد الset لحتى ابعتا للدالة دغري*/} 
 
           <WhatsAppButton productTitle={product.name} selectedVariants={selectedVariants} />
         </div>

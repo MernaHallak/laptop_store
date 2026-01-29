@@ -73,6 +73,14 @@ export const shops: Shop[] = [
     tagline: 'International models and hard-to-find SKUs',
     category: 'Global',
   },
+  {
+    id: 10,
+    name: 'Import Electronics',
+    logo: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&h=200&fit=crop',
+    location: 'Seattle, WA',
+    tagline: 'International models and hard-to-find SKUs',
+    category: 'Global',
+  },
 ];
 
 let productId = 1;

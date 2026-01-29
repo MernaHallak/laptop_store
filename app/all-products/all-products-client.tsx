@@ -6,10 +6,11 @@ import { MessageCircle, Search } from 'lucide-react';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { ProductCard } from '@/components/ProductCard';
 import type { Product, ProductCondition, ProductFilters, Shop } from '@/lib/types';
+import { products } from "@/lib/data";
 
 type SortBy = 'featured' | 'price-low' | 'price-high' | 'name-az' | 'name-za';
 
-export function ProductsClient({ shop, products }: { shop: Shop; products: Product[] }) {
+export function ProductsClient() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortBy>('featured');
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,12 +139,6 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
     });
   }
 
-  function handleWhatsAppContact() {
-    // Replace with your real number, e.g. '905xxxxxxxxx'
-    const phone = '0000000000';
-    const message = encodeURIComponent(`Hi! I'm interested in products from ${shop.name}.`);
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank', 'noopener,noreferrer');
-  }
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -155,8 +150,7 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
               <Link href="/" className="text-sm text-neutral-600 hover:text-black">
                 ← Back to shops
               </Link>
-              <h1 className="text-2xl font-semibold text-neutral-900 truncate">{shop.name}</h1>
-              <p className="text-sm text-neutral-600 truncate">{shop.tagline}</p>
+              <h1 className="text-2xl font-semibold text-neutral-900 truncate">All Products</h1>
             </div>
 
             <div className="flex-1 max-w-2xl relative sm:ml-auto">
@@ -261,14 +255,6 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
         </div>
       </div>
 
-      {/* WhatsApp Contact Button */}
-      <button
-        onClick={handleWhatsAppContact}
-        className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition-colors"
-        aria-label="Contact on WhatsApp"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
     </div>
   );
 }

@@ -8,9 +8,8 @@ interface ShopCardProps {
 
 export function ShopCard({ shop }: ShopCardProps) {
   return (
-    <Link
-      href={`/shops/${shop.id}`}
-      className="group block bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow duration-200 overflow-hidden"
+    <div
+      className="block bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow duration-200 overflow-hidden"
       aria-label={`Open ${shop.name} store`}
     >
       <div className="p-6">
@@ -30,12 +29,15 @@ export function ShopCard({ shop }: ShopCardProps) {
           <p className="text-gray-600 text-sm mb-5 min-h-[40px]">{shop.tagline}</p>
 
           <div className="w-full">
-            <div className="w-full bg-black text-white py-2.5 rounded-lg text-sm font-medium group-hover:bg-gray-800 transition-colors duration-200">
+            {/* على عنصر انلاين متل link , a , span لا يطبق w , h , m , p فبحول العنصر لنوع تاني حسب حاجتي متل inline-flex او flex*/}
+            {/* flex هو عنصر بلوك بياخد كل المساحة والولاد البقلبو بيجو حد بعض  */}
+            {/* inline-flex  بحول العنصر لاينلاين ولكن يطبق w , h , m , p  ويتم النعامل مع كل خصاىص ال flex نفس ال flex ولاكن هون انلاين بدل ما يكون بلوك*/}
+            <Link href={`/shops/${shop.id}`} className="inline-flex w-full justify-center bg-black text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors duration-200">
               View Store
-            </div>
+            </Link>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

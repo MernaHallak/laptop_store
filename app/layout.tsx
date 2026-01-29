@@ -16,3 +16,5 @@ export default function RootLayout({
     </html>
   );
 }
+// يعني {children} = “الصفحة الحالية اللي عم تزورها”.
+
