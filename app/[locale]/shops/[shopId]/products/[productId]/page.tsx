@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, shops } from "@/lib/data";
 import {ProductDetailsClient} from "./product-details-client";
+import NavbarSearch from "@/components/NavbarSearch";
 
 export default async function ProductDetailsPage({
   params,
@@ -47,7 +48,7 @@ min-w-0 بيساعد تطلع النقاط بالحالات اللي flex كان
               {product.name}
             </h1>
           </div>
-
+            <NavbarSearch />
           <Link
             href={`/shops/${shop.id}`}
             className="shrink-0 text-sm px-3 py-2 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 transition-colors"

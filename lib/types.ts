@@ -42,6 +42,8 @@ export interface Product {
   gpu: string;
   condition: ProductCondition;
   price: number;
+  categoryKey: "laptops" | "accessories" | "parts";
+  descriptionKey: string;
   image: string;
 }
 
@@ -54,3 +56,14 @@ export interface ProductFilters {
   conditions: ProductCondition[];
   priceRange: [number, number];
 }
+export const SHOP_CATEGORY_KEYS = ["laptops", "accessories", "parts"] as const;
+export type ShopCategoryKey = (typeof SHOP_CATEGORY_KEYS)[number];
+
+export type ShopCategoryCard = {
+  key:ShopCategoryKey;
+  titleKey: string;
+  descKey: string;
+  image?: string;
+};
+
+

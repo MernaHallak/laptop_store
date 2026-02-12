@@ -1,36 +1,53 @@
-'use client';
+"use client";
+// هو الاحسن بما انو بدي استخدمو بكذا صفحة وليس فقط بصفحة ال products بانو حطو بملف الكومبونانت ليكون عام
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { MessageCircle, Search } from "lucide-react";
+import { FilterSidebar } from "@/components/FilterSidebar";
+import { ProductCard } from "@/components/ProductCard";
+import type { Product, ProductCondition, ProductFilters, Shop } from "@/lib/types";
+import { Pagination } from "@/components/Pagination";
+import { useTranslations } from "next-intl";
+import { Global } from "recharts";
+import NavbarSearch from "@/components/NavbarSearch";
+import NavbarShop from "@/components/NavbarShop";
 
-import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
-import { MessageCircle, Search } from 'lucide-react';
-import { FilterSidebar } from '@/components/FilterSidebar';
-import { ProductCard } from '@/components/ProductCard';
-import type { Product, ProductCondition, ProductFilters, Shop } from '@/lib/types';
+type SortBy = "featured" | "price-low" | "price-high" | "name-az" | "name-za";
 
-type SortBy = 'featured' | 'price-low' | 'price-high' | 'name-az' | 'name-za';
-
-export function ProductsClient({ shop, products }: { shop: Shop; products: Product[] }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<SortBy>('featured');
+export default function ShopProductsClient({
+  locale,
+  shop,
+  products,
+  category,
+}: {
+  locale: string;
+  shop: Shop;
+  products: Product[];
+  category?: string;
+}) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SortBy>("price-low");
   const [currentPage, setCurrentPage] = useState(1);
-
+const tCommon = useTranslations("Common");
+  //   {shop?.name} وقت نستدعيا منحط اشارة استفهام لان ممكن تكون null
+  // هون ما عاد لازم ? لأن السيرفر ضمن إن shop موجودة، بس تركت الملاحظة.
   const priceBounds = useMemo(() => {
     if (products.length === 0) return { min: 0, max: 0 };
     const prices = products.map((p) => p.price);
     return { min: Math.min(...prices), max: Math.max(...prices) };
   }, [products]);
 
-//   بدل ما نخزّن كل فلتر لحاله بـ state منفصلة، نخزنهم كلهم بكائن واحد:
+  //   بدل ما نخزّن كل فلتر لحاله بـ state منفصلة، نخزنهم كلهم بكائن واحد:
 
-// يسهل تمريرهم لمكوّن FilterSidebar
-// ويسهل تحديثهم دفعة واحدة 
-// ضمن التفاعل الواحد، فيك تغيّري كذا مفتاح مرة وحدة بـ setFilters واحدة. 
-// مثال: لما تختاري ماركة، بدك كمان تصفّري الصفحة وتفضّي CPUs
-// setFilters(prev => ({
-//   ...prev,
-//   brands: newBrands,
-//   cpus: [],
-  const [filters, setFilters] = useState<ProductFilters>({
+  // يسهل تمريرهم لمكوّن FilterSidebar
+  // ويسهل تحديثهم دفعة واحدة
+  // ضمن التفاعل الواحد، فيك تغيّري كذا مفتاح مرة وحدة بـ setFilters واحدة.
+  // مثال: لما تختاري ماركة، بدك كمان تصفّري الصفحة وتفضّي CPUs
+  // setFilters(prev => ({
+  //   ...prev,
+  //   brands: newBrands,
+  //   cpus: [],
+  const [filters, setFilters] = useState<ProductFilters>(() => ({
     brands: [],
     cpus: [],
     rams: [],
@@ -38,10 +55,9 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
     gpus: [],
     conditions: [],
     priceRange: [priceBounds.min, priceBounds.max],
-  });
-// priceBounds = حدود محسوبة من المنتجات (الحقيقة) للحدود المسموحة
-// filters.priceRange = اختيار المستخدم (state) اول مرة بتكون قيمتا من قيمة priceBounds بعدين بتصير على حسب شو المستخدم بيختار 
-
+  }));
+  // priceBounds = حدود محسوبة من المنتجات (الحقيقة) للحدود المسموحة
+  // filters.priceRange = اختيار المستخدم (state) اول مرة بتكون قيمتا من قيمة priceBounds بعدين بتصير على حسب شو المستخدم بيختار
 
   // If products change (different shop), reset the price range sensibly.
   useEffect(() => {
@@ -50,7 +66,7 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
       priceRange: [priceBounds.min, priceBounds.max],
     }));
   }, [priceBounds.min, priceBounds.max]);
-  // فيني حط [products] بس متل مو حاطة احسن لان مربوط بالسبب الرىيسي للتعديل وحتى ما يشتغل عالفاضي اذا تغيرت فيا المنتجات بس ضلو نفس اسعار القبل 
+  // فيني حط [products] بس متل مو حاطة احسن لان مربوط بالسبب الرىيسي للتعديل وحتى ما يشتغل عالفاضي اذا تغيرت فيا المنتجات بس ضلو نفس اسعار القبل
 
   const options = useMemo(() => {
     const uniq = (arr: string[]) => Array.from(new Set(arr)).sort((a, b) => a.localeCompare(b));
@@ -97,16 +113,16 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
     const list = [...filtered];
 
     switch (sortBy) {
-      case 'price-low':
+      case "price-low":
         // قاعدة دالة ال sort():
         // إذا الناتج موجب → b يجي قبل a.(b اول)
         // إذا الناتج سلبي → a يجي قبل b.(a اول)
         return list.sort((a, b) => a.price - b.price);
-      case 'price-high':
+      case "price-high":
         return list.sort((a, b) => b.price - a.price);
-      case 'name-az':
+      case "name-az":
         return list.sort((a, b) => a.name.localeCompare(b.name));
-      case 'name-za':
+      case "name-za":
         return list.sort((a, b) => b.name.localeCompare(a.name));
       default:
         return list; // featured: keep data order
@@ -118,14 +134,14 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
   const totalPages = Math.max(1, Math.ceil(sorted.length / itemsPerPage));
   // تثبيت الصفحة الحالية ضمن الحدود
   // إذا currentPage أكبر من totalPages (مثلاً كنت بصفحة 5 وبعدين الفلترة صغرت النتائج وصاروا صفحتين يعني التوتال
-// → هذا السطر بينزّلك لأقصى صفحة موجودة فعليًا.
+  // → هذا السطر بينزّلك لأقصى صفحة موجودة فعليًا.
   const page = Math.min(currentPage, totalPages);
   const startIndex = (page - 1) * itemsPerPage;
   const paginated = sorted.slice(startIndex, startIndex + itemsPerPage);
 
   function clearFilters() {
-    setSearchQuery('');
-    setSortBy('featured');
+    setSearchQuery("");
+    setSortBy("price-low");
     setCurrentPage(1);
     setFilters({
       brands: [],
@@ -140,26 +156,30 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
 
   function handleWhatsAppContact() {
     // Replace with your real number, e.g. '905xxxxxxxxx'
-    const phone = '0000000000';
+    const phone = "0000000000";
     const message = encodeURIComponent(`Hi! I'm interested in products from ${shop.name}.`);
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank", "noopener,noreferrer");
   }
 
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Top Bar */}
-      <header className="bg-white border-b border-neutral-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="min-w-0">
-              <Link href="/" className="text-sm text-neutral-600 hover:text-black">
-                ← Back to shops
-              </Link>
-              <h1 className="text-2xl font-semibold text-neutral-900 truncate">{shop.name}</h1>
-              <p className="text-sm text-neutral-600 truncate">{shop.tagline}</p>
-            </div>
+      <NavbarShop locale={locale} shop={shop} />
 
-            <div className="flex-1 max-w-2xl relative sm:ml-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
+          {/* Filters */}
+          <div className="lg:sticky lg:top-24 self-start">
+            <FilterSidebar filters={filters} setFilters={setFilters} options={options} onClear={clearFilters} category={category} />
+          </div>
+
+          {/* Main */}
+          <main>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-4">
+              <p className="text-sm text-neutral-600">
+                {sorted.length} {sorted.length === 1 ? "product" : "products"} found
+              </p>
+    <div className="flex-1 max-w-2xl relative sm:ml-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
               <input
                 type="text"
@@ -172,24 +192,6 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-neutral-200 bg-white focus:ring-2 focus:ring-black focus:border-transparent outline-none"
               />
             </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
-          {/* Filters */}
-          <div className="lg:sticky lg:top-24 self-start">
-            <FilterSidebar filters={filters} setFilters={setFilters} options={options} onClear={clearFilters} />
-          </div>
-
-          {/* Main */}
-          <main>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-              <p className="text-sm text-neutral-600">
-                {sorted.length} {sorted.length === 1 ? 'product' : 'products'} found
-              </p>
-
               <div className="flex items-center gap-2">
                 <span className="text-sm text-neutral-600">Sort by:</span>
                 <select
@@ -200,11 +202,11 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
                   }}
                   className="text-sm rounded-lg border border-neutral-200 bg-white px-3 py-2"
                 >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name-az">Name: A–Z</option>
-                  <option value="name-za">Name: Z–A</option>
+                  {/* <option value="featured">Featured</option> */}
+                  <option value="price-low">Low to High</option>
+                  <option value="price-high">High to Low</option>
+                  <option value="name-az">A–Z</option>
+                  <option value="name-za">Z–A</option>
                 </select>
               </div>
             </div>
@@ -224,8 +226,17 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
               </div>
             )}
 
-            {/* Pagination */}
-            {totalPages > 1 && (
+           
+             {/* Pagination */}
+                    <Pagination
+                      page={page}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                      previousLabel={tCommon("previous")}
+                      nextLabel={tCommon("next")}
+                    />
+                  {/* Pagination هي بدون الفانكشن الفوق*/}  
+            {/* {totalPages > 1 && (
               <div className="flex items-center justify-center flex-wrap gap-2 mt-8">
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -240,9 +251,9 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
                     key={p}
                     onClick={() => setCurrentPage(p)}
                     className={[
-                      'px-3 py-2 rounded-lg text-sm',
-                      p === page ? 'bg-black text-white' : 'border border-neutral-200 bg-white hover:bg-neutral-100',
-                    ].join(' ')}
+                      "px-3 py-2 rounded-lg text-sm",
+                      p === page ? "bg-black text-white" : "border border-neutral-200 bg-white hover:bg-neutral-100",
+                    ].join(" ")}
                   >
                     {p}
                   </button>
@@ -256,7 +267,7 @@ export function ProductsClient({ shop, products }: { shop: Shop; products: Produ
                   Next
                 </button>
               </div>
-            )}
+            )} */}
           </main>
         </div>
       </div>

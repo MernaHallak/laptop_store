@@ -18,16 +18,9 @@ export function ProductDetailsClient({ shop, product }: { shop: Shop; product: P
 
   const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
 
-  const keySpecs = useMemo(() => {
+  const productDesc = useMemo(() => {
     // حطيتن مصفوفة اوبجكتات وليس اوبجيكت واحد فيو كلشي لان العرض بـ map أسهل وأنظف
-    return [
-      { label: 'Brand', value: product.brand },
-      { label: 'CPU', value: product.cpu },
-      { label: 'RAM', value: product.ram },
-      { label: 'Storage', value: product.storage },
-      { label: 'GPU', value: product.gpu },
-      { label: 'Condition', value: product.condition },
-    ];
+    return (`${product.descriptionKey}`)
   }, [product]);
 
   const fullSpecs = useMemo(() => {
@@ -72,10 +65,11 @@ export function ProductDetailsClient({ shop, product }: { shop: Shop; product: P
             availability="In Stock"
             warranty="Warranty available — contact seller"
             condition={product.condition}
-            keySpecs={keySpecs}
+            productDesc={productDesc}
             variants={variants}
             selectedVariants={selectedVariants}
             onVariantChange={handleVariantChange}
+           
           />
           {/* مررت الدالة بدل من تمرير setSelectedVariants فقط وبالملف اعملو الفانكشن لان اذا بدي الفانكشن بمكان تاني بدي ارجع اعمل الفانكشن اما الاصح اعمل الفانكشن بمكان تواجد الset لحتى ابعتا للدالة دغري*/} 
 

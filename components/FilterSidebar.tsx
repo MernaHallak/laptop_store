@@ -18,11 +18,13 @@ export function FilterSidebar({
   setFilters,
   options,
   onClear,
+  category,
 }: {
   filters: ProductFilters;
   setFilters: (next: ProductFilters) => void;
   options: FilterOptions;
   onClear: () => void;
+  category?: string;
 }) {
   function toggle(listKey: keyof Omit<ProductFilters, 'priceRange'>, value: string) {
     const list = filters[listKey] as string[];
@@ -107,20 +109,24 @@ export function FilterSidebar({
             </div>
           </div>
         </section>
+     {category === "laptops" && (
+  <>
+    <Divider />
 
-        <Divider />
+    <FilterGroup title="Brand" options={options.brands} selected={filters.brands} onToggle={(v) => toggle("brands", v)} />
+    <FilterGroup title="CPU" options={options.cpus} selected={filters.cpus} onToggle={(v) => toggle("cpus", v)} />
+    <FilterGroup title="RAM" options={options.rams} selected={filters.rams} onToggle={(v) => toggle("rams", v)} />
+    <FilterGroup title="Storage" options={options.storages} selected={filters.storages} onToggle={(v) => toggle("storages", v)} />
+    <FilterGroup title="GPU" options={options.gpus} selected={filters.gpus} onToggle={(v) => toggle("gpus", v)} />
+    <FilterGroup
+      title="Condition"
+      options={options.conditions}
+      selected={filters.conditions}
+      onToggle={(v) => toggle("conditions", v)}
+    />
+  </>
+)}
 
-        <FilterGroup title="Brand" options={options.brands} selected={filters.brands} onToggle={(v) => toggle('brands', v)} />
-        <FilterGroup title="CPU" options={options.cpus} selected={filters.cpus} onToggle={(v) => toggle('cpus', v)} />
-        <FilterGroup title="RAM" options={options.rams} selected={filters.rams} onToggle={(v) => toggle('rams', v)} />
-        <FilterGroup title="Storage" options={options.storages} selected={filters.storages} onToggle={(v) => toggle('storages', v)} />
-        <FilterGroup title="GPU" options={options.gpus} selected={filters.gpus} onToggle={(v) => toggle('gpus', v)} />
-        <FilterGroup
-          title="Condition"
-          options={options.conditions}
-          selected={filters.conditions}
-          onToggle={(v) => toggle('conditions', v)}
-        />
       </div>
     </aside>
   );

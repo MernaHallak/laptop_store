@@ -1,12 +1,23 @@
+// ولو مو حاطة "use client" بس رحت وستدعيت هاد الكمبونانت بكلينت كمبونانت فكمان هاد الكمبونانت يعامل معاملة كلينت كمبونانت وينفذ على المتصفح
 import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import type { Shop } from '@/lib/types';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { getPresentCategoryKeys } from '@/lib/shopCategories';
 
 interface ShopCardProps {
   shop: Shop;
 }
 
-export function ShopCard({ shop }: ShopCardProps) {
+export  function ShopCard({ shop }: ShopCardProps) {
+  const {locale} = useParams<{locale: "ar" | "en"}>(); 
+    const presentKeys = getPresentCategoryKeys(shop.id);
+    const href =
+    presentKeys.length === 1
+      ? `/${locale}/shops/${shop.id}/products`
+      : `/${locale}/shops/${shop.id}/categories`;
+  const tShop =  useTranslations("Shop");
   return (
     <div
       className="block bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow duration-200 overflow-hidden"
@@ -25,15 +36,15 @@ export function ShopCard({ shop }: ShopCardProps) {
             <MapPin className="w-4 h-4" />
             <span className="text-sm">{shop.location}</span>
           </div>
-
-          <p className="text-gray-600 text-sm mb-5 min-h-[40px]">{shop.tagline}</p>
+{/* إذا تغيّر ترتيب المنتجات أو تبدّلت ids (خصوصًا إذا ids auto-increment) رح تتخربط الترجمات  الـ id مو stable عادة لازم نعملا متل ما عملنا ال descriptionKey*/}
+          <p className="text-gray-600 text-sm mb-5 min-h-[40px]">{tShop(`tagline.${shop.id}`)}</p>
 
           <div className="w-full">
             {/* على عنصر انلاين متل link , a , span لا يطبق w , h , m , p فبحول العنصر لنوع تاني حسب حاجتي متل inline-flex او flex*/}
             {/* flex هو عنصر بلوك بياخد كل المساحة والولاد البقلبو بيجو حد بعض  */}
             {/* inline-flex  بحول العنصر لاينلاين ولكن يطبق w , h , m , p  ويتم النعامل مع كل خصاىص ال flex نفس ال flex ولاكن هون انلاين بدل ما يكون بلوك*/}
-            <Link href={`/shops/${shop.id}`} className="inline-flex w-full justify-center bg-black text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors duration-200">
-              View Store
+            <Link href={href} className="inline-flex w-full justify-center bg-black text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors duration-200">
+             {tShop("viewStore")}
             </Link>
           </div>
         </div>

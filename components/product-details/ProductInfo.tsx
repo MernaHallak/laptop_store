@@ -1,11 +1,10 @@
 'use client';
 
+import { products } from '@/lib/data';
 import { Check, Package, Shield, Info } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
-interface KeySpec {
-  label: string;
-  value: string;
-}
+
 
 interface Variant {
   id: number;
@@ -19,7 +18,7 @@ interface ProductInfoProps {
   availability: string;
   warranty: string;
   condition: string;
-  keySpecs: KeySpec[];
+  productDesc : string;
   variants: Variant[];
   selectedVariants: Record<string, string>;
   onVariantChange: (variantName: string, option: string) => void;
@@ -31,11 +30,12 @@ export function ProductInfo({
   availability,
   warranty,
   condition,
-  keySpecs,
+  productDesc,
   variants,
   selectedVariants,
   onVariantChange,
 }: ProductInfoProps) {
+  const tProducts = useTranslations("products");
   return (
     <div className="space-y-6">
       {/* Title and Price */}
@@ -62,19 +62,14 @@ export function ProductInfo({
         </div>
       </div>
 
-      {/* Key Specs */}
+      {/* product description  */}
       <div className="bg-white rounded-xl p-6 shadow-sm">
         <h2 className="mb-4 flex items-center gap-2">
           <Info className="w-5 h-5 text-blue-600" />
-          Key Specifications
+          product description 
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {keySpecs.map((spec, index) => (
-            <div key={index} className="space-y-1">
-              <div className="text-neutral-500">{spec.label}</div>
-              <div>{spec.value}</div>
-            </div>
-          ))}
+        <div>
+          {tProducts(`${productDesc}.desc`)}
         </div>
       </div>
 

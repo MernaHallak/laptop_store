@@ -1,0 +1,77 @@
+{
+  "Nav": {
+    "brand": "LaptopMarket",
+    "allProducts": "All Products",
+    "about": "About",
+    "switchToArabic": "العربية"
+  },
+  "Shop": {
+    "tagline": {
+      "1": "Premium laptops for professionals and creatives",
+      "2": "Affordable laptops that get the job done",
+      "3": "High-performance gaming rigs and accessories",
+      "4": "Certified refurbished laptops with warranty",
+      "5": "Student-friendly prices and bundles",
+      "6": "Color-accurate displays & creator laptops",
+      "7": "Business fleets, warranties, and support",
+      "8": "Local pickup, repairs, and upgrades",
+      "9": "International models and hard-to-find SKUs",
+      "10": "International models and hard-to-find SKUs"
+    },
+     "countFound": "{count, plural, one {# shop found} other {# shops found}}" ,
+      "viewStore": "View store" ,
+      "emptyState": "No shops found matching your criteria."
+  
+  },
+   "Common": {
+    "next": "Next",
+    "previous": "Previous",
+    "clearFilters": "Clear all filters",
+    "backToShops": "Back to shops",
+    "searchProducts": "Search products..."
+},
+"ShopCategories": {
+  "title": "Shop Categories",
+  "laptops": "Laptops",
+  "laptopsDesc": "Browse laptops in this store",
+  "accessories": "Accessories",
+  "accessoriesDesc": "Chargers, bags, mice, keyboards…",
+  "parts": "Parts",
+  "partsDesc": "Spare parts and replacements",
+  "allProducts": "All products",
+  "allProductsDesc": "Browse everything in this store",
+  "view": "View"
+},
+
+  "products": {
+    "macbookPro14": { "desc": "A premium laptop for creative work and study, smooth experience and great build quality." },
+    "dellXps13": { "desc": "A lightweight laptop for commuting and everyday work, with a sleek design and comfortable daily use." },
+
+    "acerAspire5": { "desc": "A budget-friendly option for daily use and study, ideal for basic tasks and browsing." },
+    "lenovoIdeaPad3": { "desc": "A practical, affordable laptop for students and office work, built for everyday needs." },
+
+    "asusRogStrixG16": { "desc": "A performance-focused gaming laptop, great for gaming and demanding workloads." },
+    "msiKatana15": { "desc": "A balanced gaming laptop for entertainment and mid-to-heavy projects." },
+
+    "hpEliteBook840Refurb": { "desc": "A refurbished business laptop for office work, a practical choice at a lower price." },
+    "thinkPadT480Refurb": { "desc": "A reliable refurbished laptop, well-suited for daily work and portability." },
+
+    "surfaceLaptopGo": { "desc": "A lightweight laptop for students and commuting, ideal for everyday productivity." },
+    "chromebook14": { "desc": "A simple choice for school and browsing, best for light use and cloud apps." },
+
+    "macbookAir13": { "desc": "A thin and portable laptop for everyday productivity, great for study and work on the go." },
+    "asusZenbookOled14": { "desc": "A sleek productivity laptop built for comfort during long sessions and daily commuting." },
+
+    "dellLatitude7440": { "desc": "A business-ready laptop for enterprise environments and daily office productivity." },
+    "hpProBook450": { "desc": "A practical laptop for work and study, suited for everyday tasks and productivity." },
+
+    "usedMacbookPro13": { "desc": "A used device in good condition for daily needs, a solid value option." },
+    "usedLenovoLegion5": { "desc": "A used gaming laptop with strong performance, a powerful option at a better value." },
+
+    "lgGram16": { "desc": "A lightweight laptop with a large screen, great for long workdays and travel." },
+    "razerBlade15": { "desc": "A powerful high-performance laptop for gaming and demanding creative workloads." }
+  }
+
+
+
+}

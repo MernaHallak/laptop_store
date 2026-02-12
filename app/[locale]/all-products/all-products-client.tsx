@@ -174,7 +174,7 @@ export function ProductsClient() {
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
           {/* Filters */}
           <div className="lg:sticky lg:top-24 self-start">
-            <FilterSidebar filters={filters} setFilters={setFilters} options={options} onClear={clearFilters} />
+            <FilterSidebar filters={filters} setFilters={setFilters} options={options} onClear={clearFilters}  />
           </div>
 
           {/* Main */}
