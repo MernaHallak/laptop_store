@@ -25,7 +25,7 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: (typeof LOCALES)[number] }>; //هذا يعني: “هات نوع أي عنصر داخل هالمصفوفة "ar" | "en"
+  params: Promise<{ locale: string}>; //هذا يعني: “هات نوع أي عنصر داخل هالمصفوفة "ar" | "en"
 
 }) {
   const { locale } = await params;

@@ -8,7 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import NavbarShop from "@/components/NavbarShop";
 
 type Props = {
-  params: Promise<{locale: "ar" | "en"; shopId: string}>;
+  params: Promise<{locale: string; shopId: string}>;
 };
 
 export default async function CategoriesPage({params}: Props) {
